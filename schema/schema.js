@@ -5,11 +5,13 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
+  GraphQLSchema,
 } = graphql;
 
 const users = [
   { id: '23', firstName: 'Bill', age: 20 },
   { id: '47', firstName: 'Samantha', age: 31 },
+  { id: '2', firstName: 'Alejandro', lastName: 'Chang', age: 31, location: 'San Francisco Bay Area', company: { name: 'Blackbird', sector: 'aviation'} },
 ];
 
 // what properties the User type is suppose to have
@@ -19,6 +21,8 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLString },
     firstName: { type: GraphQLString },
     age: { type: GraphQLInt },
+    lastName: { type: GraphQLString },
+    location: { type: GraphQLString },
   }
 });
 // We have instructed GQL that every single user will have 
@@ -43,3 +47,6 @@ const RootQuery = new GraphQLObjectType({
 // We have to give the GraphQL the Root Query. It's where you start 
 // to connect to the rest of the Graph (data).
 
+module.exports = new GraphQLSchema({
+  query: RootQuery
+});
