@@ -1,18 +1,12 @@
 // SCHEMA TABLES
 const graphql = require('graphql');
-const _ = require('lodash');
+const axios = require('axios');
 const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
 } = graphql;
-
-const users = [
-  { id: '23', firstName: 'Bill', age: 20 },
-  { id: '47', firstName: 'Samantha', age: 31 },
-  { id: '2', firstName: 'Alejandro', lastName: 'Chang', age: 31, location: 'San Francisco Bay Area', company: { name: 'Blackbird', sector: 'aviation'} },
-];
 
 // what properties the User type is suppose to have
 const UserType = new GraphQLObjectType({
@@ -35,7 +29,8 @@ const RootQuery = new GraphQLObjectType({
       type: UserType,
       args: { id: { type: GraphQLString } }, // arguments for root query
       resolve(parentValue, args) {
-        return _.find(users, { id: args.id });
+        return axios.get(`http://localhost:3000/users/${args.id}`)
+          .then((resp) => resp.data);
       }
       // give me an id, I will give you back a user
       // resolve function's purpose, goes into db and 
@@ -50,3 +45,6 @@ const RootQuery = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
   query: RootQuery
 });
+
+
+// resolve is our playground for fetching data, whether its coming from a data warehouse, db, api call etc.
