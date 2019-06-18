@@ -25,7 +25,13 @@ const UserType = new GraphQLObjectType({
     firstName: { type: GraphQLString },
     age: { type: GraphQLInt },
     lastName: { type: GraphQLString },
-    companyId: { type: GraphQLString }
+    company: {
+      type: CompanyType,
+      resolve(parentValue, args) {
+        return axios.get(`http://localhost:3000/companies/${parentValue.companyId}`)
+          .then((res) => res.data);
+      }
+    },
   }
 });
 // We have instructed GQL that every single user will have 
@@ -45,14 +51,14 @@ const RootQuery = new GraphQLObjectType({
       // resolve function's purpose, goes into db and 
       // finds the actual data we're looking for
     },
-    company: {
-      type: CompanyType,
-      args: { id: { type: GraphQLString } },
-      resolve(parentValue, args) {
-        return axios.get(`http:localhost:3000/companies/${args.id}`)
-          .then((resp) => resp.data);
-      }
-    }
+    // company: {
+    //   type: CompanyType,
+    //   args: { id: { type: GraphQLString } },
+    //   resolve(parentValue, args) {
+    //     return axios.get(`http:localhost:3000/companies/${args.id}`)
+    //       .then((resp) => resp.data);
+    //   }
+    // }
   }
 });
 
