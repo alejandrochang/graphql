@@ -4,7 +4,7 @@
     { "id": "40", "firstName": "Alex","lastName": "Chang", "age": 27, "companyId": "1" },
     { "id": "2", "firstName": "Stephen", "lastName": "Sanchez","age": 17, "companyId": "3" },
     { "id": "3", "firstName": "John","lastName": "Cook", "age": 80, "companyId": "2" },
-    { "id": "12", "firstName": "David","lastName": "Brian", "age": 19, "companyId": "2" },
+    { "id": "12", "firstName": "David","lastName": "Brian", "age": 19, "companyId": "1" },
     { "id": "340", "firstName": "Wallice","lastName": "Lin", "age": 25, "companyId": "0" }
   ],
   "companies": [

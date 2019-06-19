@@ -6,6 +6,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLSchema,
+  GraphQLList,
 } = graphql;
 
 const CompanyType = new GraphQLObjectType({
@@ -14,6 +15,13 @@ const CompanyType = new GraphQLObjectType({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parentValue, _) {
+        return axios.get(`http://localhost:3000/companies/${parentValue.id}/users`)
+          .then(res => res.data);
+      }
+    }
   }
 })
 
@@ -37,6 +45,8 @@ const UserType = new GraphQLObjectType({
 // We have instructed GQL that every single user will have 
 // an id, firstName and age property.
 
+
+// you can have multiple entry points in the graphql queries
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -51,14 +61,14 @@ const RootQuery = new GraphQLObjectType({
       // resolve function's purpose, goes into db and 
       // finds the actual data we're looking for
     },
-    // company: {
-    //   type: CompanyType,
-    //   args: { id: { type: GraphQLString } },
-    //   resolve(parentValue, args) {
-    //     return axios.get(`http:localhost:3000/companies/${args.id}`)
-    //       .then((resp) => resp.data);
-    //   }
-    // }
+    company: {
+      type: CompanyType,
+      args: { id: { type: GraphQLString } },
+      resolve(parentValue, args) {
+        return axios.get(`http://localhost:3000/companies/${args.id}`)
+          .then((resp) => resp.data);
+      }
+    }
   }
 });
 
